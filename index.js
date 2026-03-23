@@ -1,4 +1,14 @@
 const { Client, GatewayIntentBits } = require('discord.js');
+const express = require('express');
+const app = express();
+
+app.get("/", (req, res) => {
+  res.send("Bot en ligne !");
+});
+
+app.listen(3000, () => {
+  console.log("Serveur web démarré");
+});
 
 const client = new Client({
   intents: [
@@ -16,12 +26,10 @@ client.on("ready", () => {
 client.on("messageCreate", async (message) => {
   if (message.author.bot) return;
 
-  // Vérifie si la personne a le rôle Recruteur
   if (!message.member.roles.cache.some(role => role.name === "Recruteur")) {
     return;
   }
 
-  // Commande unique
   if (message.content.startsWith("!recrutement")) {
     const member = message.mentions.members.first();
     if (!member) return message.reply("Mentionne la personne.");
